@@ -24,7 +24,7 @@ func Main(bin string, args []string) int {
 		fmt.Fprintf(os.Stderr, "could not resolve path: %v\n", err)
 		return EXIT_IO
 	}
-	dir, err := ioutil.TempDir("", args[0])
+	dir, err := ioutil.TempDir("", filepath.Base(args[0]))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "could not create temp directory: %v\n", err)
 		return EXIT_IO
@@ -35,7 +35,7 @@ func Main(bin string, args []string) int {
 			fmt.Fprintf(os.Stderr, "could not remove temp directory: %v\n", err)
 		}
 	}()
-	if err := os.Symlink(path, dir+"/src"); err != nil {
+	if err := os.Symlink(path, filepath.Join(dir, "src")); err != nil {
 		fmt.Fprintf(os.Stderr, "could not symlink src: %v\n", err)
 		return EXIT_IO
 	}
